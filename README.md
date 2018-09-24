@@ -14,6 +14,6 @@ Cool features:
 
 2. Penalty apples when timeout is reached
 
-LICENSE: https://en.wikipedia.org/wiki/Public_domain_equivalent_license
+LICENSE: https://en.wikipedia.org/wiki/WTFPL
 
 ![Alt text](snake.png?raw=true)
