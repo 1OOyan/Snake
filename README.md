@@ -13,7 +13,7 @@ Cool features:
 
 1. The game screen is resizable while playing. Nice to use with tmux.
 
-2. Penalty apples when timeout is reached. Red bar indicator embedded in the bottom wall.
+2. Penalty apples when timeout is reached. Red timeout indicator embedded in the bottom wall. 
 
 3. The snake moves faster with each eaten apple. Try to reach a score above 100 points.
 
