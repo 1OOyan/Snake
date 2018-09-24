@@ -8,6 +8,7 @@ gcc Snake.c -lncurses -lm -o Snake
 
 Run: ./Snake
 
+Use arrow keys to move the snake around.
 
 Cool features:
 
