@@ -1,6 +1,6 @@
 # Snake
 
-Single file NCurses implementation of the game Snake
+Single file ncurses implementation of the game Snake
 
 Compile like:
 
