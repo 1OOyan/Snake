@@ -10,7 +10,7 @@ Run: ./Snake
 
 Cool features:
 
-1. The game screen is resizable while playing.
+1. The game screen is resizable while playing. Nice to use with TMUX.
 
 2. Penalty apples when timeout is reached
 
