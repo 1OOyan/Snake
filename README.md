@@ -4,7 +4,7 @@ Single file ncurses implementation of the game Snake
 
 Compile like:
 
-gcc snake.c -lncurses -lm -o Snake
+gcc snake.c -lcurses -lm -o Snake
 
 Run: ./snake
 
