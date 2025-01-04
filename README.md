@@ -4,9 +4,9 @@ Single file ncurses implementation of the game Snake
 
 Compile like:
 
-gcc Snake.c -lncurses -lm -o Snake
+gcc snake.c -lncurses -lm -o Snake
 
-Run: ./Snake
+Run: ./snake
 
 Use arrow keys to move the snake around.
 
