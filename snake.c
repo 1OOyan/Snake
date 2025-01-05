@@ -8,14 +8,11 @@
 #include <math.h>
 #include "snake.h"
 
-//typedef void (dtor_fptr*) (void*);
-//typedef int (eq_fptr*) (const void*, const void*);
-
-int list_init(List **list, void (*destroy)(void *data),int (*equals)(const void* key1, const void* key2))
+int list_init(List **list, void (*destroy)(void *data), int (*equals)(const void *key1, const void *key2))
 {
    if (*list == NULL)
    {
-      if ((*list = (List*) malloc(sizeof(List))) == NULL)
+      if ((*list = (List *)malloc(sizeof(List))) == NULL)
          return -1;
    }
    (*list)->size = 0;
@@ -33,7 +30,7 @@ void list_destroy(List **list)
    {
       while ((*list)->size > 0)
       {
-         list_rem_next((*list), NULL, (void **) &data);
+         list_rem_next((*list), NULL, (void **)&data);
       }
       free(*list);
       (*list) = NULL;
@@ -46,9 +43,9 @@ int list_ins_next(List *list, ListNode *element, const void *data)
 
    ListNode *new_element;
 
-   if ((new_element = (ListNode *) malloc(sizeof(ListNode))) == NULL)
+   if ((new_element = (ListNode *)malloc(sizeof(ListNode))) == NULL)
       return -1;
-   new_element->data = (void *) data;
+   new_element->data = (void *)data;
 
    if (element == NULL)
    {
@@ -66,7 +63,6 @@ int list_ins_next(List *list, ListNode *element, const void *data)
    }
    list->size++;
    return 0;
-
 }
 
 int list_rem_next(List *list, ListNode *element, void **data)
@@ -103,18 +99,18 @@ int list_rem_next(List *list, ListNode *element, void **data)
    return 0;
 }
 
-int delete_element(List* list, void* key, void** deleted)
-{  
-   
+int delete_element(List *list, void *key, void **deleted)
+{
+
    ListNode *current, *old;
-   
+
    old = NULL;
-   
+
    if (key == NULL || list == NULL || list->head == NULL)
       return -1;
-      
+
    current = list->head;
-   
+
    if (list->equals(key, current->data) == 0)
    {
       *deleted = current->data;
@@ -137,16 +133,14 @@ int delete_element(List* list, void* key, void** deleted)
          return 0;
       }
       current = current->next;
-
    }
 
    return -1;
 }
 
-
-int delete_tail(List* list)
+int delete_tail(List *list)
 {
-   ListNode* current = NULL;
+   ListNode *current = NULL;
    if (list)
    {
       current = list->head;
@@ -164,9 +158,9 @@ int delete_tail(List* list)
    return -1;
 }
 
-int find_element(List* list, void *key, void** found)
+int find_element(List *list, void *key, void **found)
 {
-   ListNode* current;
+   ListNode *current;
    if (key == NULL || list == NULL)
       return -1;
    current = list->head;
@@ -180,25 +174,21 @@ int find_element(List* list, void *key, void** found)
       current = current->next;
    }
    return -1;
-
 }
 
-void iterate(List* list, void (*iterator)(void* data))
-{  
-   ListNode* current;
+void iterate(List *list, void (*iterator)(void *data))
+{
+   ListNode *current;
    if (list == NULL)
       return;
-      
+
    current = list->head;
    while (current != NULL)
    {
       iterator(current->data);
       current = current->next;
    }
-
 }
-
-
 
 void display()
 {
@@ -219,7 +209,7 @@ void clear_display()
       }
 }
 
-void destroy(void* data)
+void destroy(void *data)
 {
    if (data != NULL)
    {
@@ -227,23 +217,24 @@ void destroy(void* data)
    }
 }
 
-int equals(const void* key1, const void* key2)
-{  
-   Node* n1;
-   Node* n2;
-   n1 = (Node*) key1;
-   n2 = (Node*) key2;
+int equals(const void *key1, const void *key2)
+{
+   Node *n1;
+   Node *n2;
+   n1 = (Node *)key1;
+   n2 = (Node *)key2;
    if (n1->x == n2->x && n1->y == n2->y)
       return 0;
    return -1;
 }
 
-int init_apples(Apples** apples)
+int init_apples(Apples **apples)
 {
 
    if ((*apples) == NULL)
    {
-      if ((*apples = (Apples*) malloc(sizeof(Apples))) == NULL) return -1;
+      if ((*apples = (Apples *)malloc(sizeof(Apples))) == NULL)
+         return -1;
       (*apples)->count = 0;
       (*apples)->list = NULL;
 
@@ -251,20 +242,19 @@ int init_apples(Apples** apples)
       {
          list_init(&((*apples)->list), destroy, equals);
       }
-
    }
    return -1;
 }
 
-int init_snake(Snake** psnake, const unsigned int size)
-{  
+int init_snake(Snake **psnake, const unsigned int size)
+{
    unsigned int i;
    unsigned int mid_x;
    unsigned int mid_y;
-   
+
    if ((*psnake) == NULL)
    {
-      if ((*psnake = (Snake*) malloc(sizeof(Snake))) == NULL)
+      if ((*psnake = (Snake *)malloc(sizeof(Snake))) == NULL)
          return -1;
       (*psnake)->size = size;
       (*psnake)->dir = left;
@@ -273,12 +263,12 @@ int init_snake(Snake** psnake, const unsigned int size)
       if ((*psnake)->body == NULL)
       {
          list_init(&((*psnake)->body), &destroy, &equals);
-         
+
          mid_y = rows / 2;
          mid_x = cols / 2;
          for (i = mid_x + size; i > mid_x; i--)
          {
-            SnakeNode* n = (SnakeNode*) malloc(sizeof(SnakeNode));
+            SnakeNode *n = (SnakeNode *)malloc(sizeof(SnakeNode));
             if (n == NULL)
                return -1;
             n->x = i;
@@ -291,18 +281,17 @@ int init_snake(Snake** psnake, const unsigned int size)
             {
                n->head = FALSE;
             }
-            list_ins_next((*psnake)->body, NULL, (const void*) n);
+            list_ins_next((*psnake)->body, NULL, (const void *)n);
          }
          return 0;
       }
    }
    return -1;
-
 }
 
-void draw_node(void* data)
+void draw_node(void *data)
 {
-   SnakeNode* n = (SnakeNode*) data;
+   SnakeNode *n = (SnakeNode *)data;
    if (n->head)
    {
       init_pair(6, COLOR_CYAN, COLOR_BLACK);
@@ -319,35 +308,34 @@ void draw_node(void* data)
    }
 }
 
-void draw_apple(void* data)
+void draw_apple(void *data)
 {
-   Apple* a = (Apple*)data;
+   Apple *a = (Apple *)data;
    init_pair(2, COLOR_RED, COLOR_BLACK);
    attron(COLOR_PAIR(2));
    attron(A_BOLD);
    mvprintw((a)->y, (a)->x, apple);
    attroff(A_BOLD);
    attroff(COLOR_PAIR(2));
-
 }
 
-void erase_node(void* data)
+void erase_node(void *data)
 {
-   SnakeNode* n = (SnakeNode*) data;
+   SnakeNode *n = (SnakeNode *)data;
    mvprintw(n->y, n->x, " ");
 }
 
-void display_snake(Snake* psnake)
+void display_snake(Snake *psnake)
 {
    iterate(psnake->body, draw_node);
 }
 
-void erase_snake(Snake* psnake)
+void erase_snake(Snake *psnake)
 {
    iterate(psnake->body, erase_node);
 }
 
-int destroy_snake(Snake** psnake)
+int destroy_snake(Snake **psnake)
 {
    if (*psnake != NULL)
    {
@@ -362,7 +350,7 @@ int destroy_snake(Snake** psnake)
 
    return -1;
 }
-int destroy_apples(Apples** papples)
+int destroy_apples(Apples **papples)
 {
    if ((*papples) != NULL)
    {
@@ -377,142 +365,137 @@ int destroy_apples(Apples** papples)
 
    return -1;
 }
-int found_apple(SnakeNode* head)
+int found_apple(SnakeNode *head)
 {
-   Node* found;
-   if (find_element(papples->list, head, (void**) &found) == 0)
+   Node *found;
+   if (find_element(papples->list, head, (void **)&found) == 0)
       return 1;
    else
       return 0;
 }
 
-
-void eat_apple(SnakeNode* head)
+void eat_apple(SnakeNode *head)
 {
-   Node* found;
-   Apple* tofree;
-   if (find_element(papples->list, head, (void**) &found) == 0)
+   Node *found;
+   Apple *tofree;
+   if (find_element(papples->list, head, (void **)&found) == 0)
    {
-      delete_element(papples->list, head, (void**)&tofree);
+      delete_element(papples->list, head, (void **)&tofree);
       papples->count--;
       free(tofree);
       time_out = TIME_OUT;
    }
-
 }
 
-void move_snake(Snake* psnake)
+void move_snake(Snake *psnake)
 {
    if (psnake)
    {
-      SnakeNode* head = (SnakeNode*)psnake->body->head->data;
-      SnakeNode* new_head = NULL;
+      SnakeNode *head = (SnakeNode *)psnake->body->head->data;
+      SnakeNode *new_head = NULL;
       switch (psnake->dir)
       {
-         case up:
-            if (!collision(psnake))
+      case up:
+         if (!collision(psnake))
+         {
+            new_head = (SnakeNode *)malloc(sizeof(SnakeNode));
+            new_head->y = head->y - 1;
+            new_head->x = head->x;
+            new_head->head = TRUE;
+            head->head = FALSE;
+            list_ins_next(psnake->body, NULL, new_head);
+
+            if (found_apple(new_head))
             {
-               new_head = (SnakeNode*) malloc(sizeof(SnakeNode));
-               new_head->y = head->y - 1;
-               new_head->x = head->x;
-               new_head->head = TRUE;
-               head->head = FALSE;
-               list_ins_next(psnake->body, NULL, new_head);
-
-               if (found_apple(new_head))
+               eat_apple(new_head);
+               score++;
+               if (papples->count == 0)
                {
-                  eat_apple(new_head);
-                  score++;
-                  if (papples->count == 0)
-                  {
-                     get_random_apple(psnake, papples);
-                  }
-
-               }
-               else
-               {
-                  delete_tail(psnake->body);
+                  get_random_apple(psnake, papples);
                }
             }
-            break;
-         case down:
-            if (!collision(psnake))
+            else
             {
-               new_head = (SnakeNode*) malloc(sizeof(SnakeNode));
-               new_head->y = head->y + 1;
-               new_head->x = head->x;
-               new_head->head = TRUE;
-               head->head = FALSE;
+               delete_tail(psnake->body);
+            }
+         }
+         break;
+      case down:
+         if (!collision(psnake))
+         {
+            new_head = (SnakeNode *)malloc(sizeof(SnakeNode));
+            new_head->y = head->y + 1;
+            new_head->x = head->x;
+            new_head->head = TRUE;
+            head->head = FALSE;
 
-               list_ins_next(psnake->body, NULL, new_head);
+            list_ins_next(psnake->body, NULL, new_head);
 
-               if (found_apple(new_head))
+            if (found_apple(new_head))
+            {
+               eat_apple(new_head);
+               score++;
+               if (papples->count == 0)
                {
-                  eat_apple(new_head);
-                  score++;
-                  if (papples->count == 0)
-                  {
-                     get_random_apple(psnake, papples);
-                  }
-
-               }
-               else
-               {
-                  delete_tail(psnake->body);
+                  get_random_apple(psnake, papples);
                }
             }
-            break;
-         case left:
-            if (!collision(psnake))
+            else
             {
-               new_head = (SnakeNode*) malloc(sizeof(SnakeNode));
-               new_head->y = head->y;
-               new_head->x = head->x - 1;
-               new_head->head = TRUE;
-               head->head = FALSE;
+               delete_tail(psnake->body);
+            }
+         }
+         break;
+      case left:
+         if (!collision(psnake))
+         {
+            new_head = (SnakeNode *)malloc(sizeof(SnakeNode));
+            new_head->y = head->y;
+            new_head->x = head->x - 1;
+            new_head->head = TRUE;
+            head->head = FALSE;
 
-               list_ins_next(psnake->body, NULL, new_head);
-               if (found_apple(new_head))
+            list_ins_next(psnake->body, NULL, new_head);
+            if (found_apple(new_head))
+            {
+               eat_apple(new_head);
+               score++;
+               if (papples->count == 0)
                {
-                  eat_apple(new_head);
-                  score++;
-                  if (papples->count == 0)
-                  {
-                     get_random_apple(psnake, papples);
-                  }
-               }
-               else
-               {
-                  delete_tail(psnake->body);
+                  get_random_apple(psnake, papples);
                }
             }
-            break;
-         case right:
-            if (!collision(psnake))
+            else
             {
-               new_head = (SnakeNode*) malloc(sizeof(SnakeNode));
-               new_head->y = head->y;
-               new_head->x = head->x + 1;
-               new_head->head = TRUE;
-               head->head = FALSE;
+               delete_tail(psnake->body);
+            }
+         }
+         break;
+      case right:
+         if (!collision(psnake))
+         {
+            new_head = (SnakeNode *)malloc(sizeof(SnakeNode));
+            new_head->y = head->y;
+            new_head->x = head->x + 1;
+            new_head->head = TRUE;
+            head->head = FALSE;
 
-               list_ins_next(psnake->body, NULL, new_head);
-               if (found_apple(new_head))
+            list_ins_next(psnake->body, NULL, new_head);
+            if (found_apple(new_head))
+            {
+               eat_apple(new_head);
+               score++;
+               if (papples->count == 0)
                {
-                  eat_apple(new_head);
-                  score++;
-                  if (papples->count == 0)
-                  {
-                     get_random_apple(psnake, papples);
-                  }
-
-               }
-               else
-               {
-                  delete_tail(psnake->body);
+                  get_random_apple(psnake, papples);
                }
             }
-            break;
+            else
+            {
+               delete_tail(psnake->body);
+            }
+         }
+         break;
       }
    }
 }
@@ -522,89 +505,89 @@ void display_apples()
    iterate(papples->list, draw_apple);
 }
 
-int self_collision(Snake* psnake, int x, int y)
+int self_collision(Snake *psnake, int x, int y)
 {
    SnakeNode n;
    SnakeNode *found;
    n.x = x;
    n.y = y;
-   if (find_element(psnake->body, &n, (void**) &found) == 0)
+   if (find_element(psnake->body, &n, (void **)&found) == 0)
       return 1;
    else
       return 0;
 }
 
-int collision(Snake* psnake)
+int collision(Snake *psnake)
 {
    if (psnake)
    {
-      SnakeNode* head = (SnakeNode*) psnake->body->head->data;
+      SnakeNode *head = (SnakeNode *)psnake->body->head->data;
       switch (psnake->dir)
       {
-         case up:
-            if (head->y - 1 == -1)
-               return 1;
-            if (self_collision(psnake, head->x, head->y - 1))
-               return 1;
-            return 0;
-            break;
-         case down:
-            if (head->y + 1 == rows)
-               return 1;
-            if (self_collision(psnake, head->x, head->y + 1))
-               return 1;
-            return 0;
-            break;
-         case right:
-            if (head->x + 1 == cols)
-               return 1;
-            if (self_collision(psnake, head->x + 1, head->y))
-               return 1;
-            return 0;
-            break;
-         case left:
-            if (head->x - 1 == -1)
-               return 1;
-            if (self_collision(psnake, head->x - 1, head->y))
-               return 1;
-            return 0;
-            break;
+      case up:
+         if (head->y - 1 == -1)
+            return 1;
+         if (self_collision(psnake, head->x, head->y - 1))
+            return 1;
+         return 0;
+         break;
+      case down:
+         if (head->y + 1 == rows)
+            return 1;
+         if (self_collision(psnake, head->x, head->y + 1))
+            return 1;
+         return 0;
+         break;
+      case right:
+         if (head->x + 1 == cols)
+            return 1;
+         if (self_collision(psnake, head->x + 1, head->y))
+            return 1;
+         return 0;
+         break;
+      case left:
+         if (head->x - 1 == -1)
+            return 1;
+         if (self_collision(psnake, head->x - 1, head->y))
+            return 1;
+         return 0;
+         break;
       }
    }
    return 0;
 }
 
-void get_input(Snake* psnake)
+void get_input(Snake *psnake)
 {
    int ch = getch();
    switch (ch)
    {
-      case KEY_LEFT:
-         if (psnake->dir != right)
-            psnake->dir = left;
-         break;
-      case KEY_DOWN:
-         if (psnake->dir != up)
-            psnake->dir = down;
-         break;
-      case KEY_UP:
-         if (psnake->dir != down)
-            psnake->dir = up;
-         break;
-      case KEY_RIGHT:
-         if (psnake->dir != left)
-            psnake->dir = right;
-         break;
+   case KEY_LEFT:
+      if (psnake->dir != right)
+         psnake->dir = left;
+      break;
+   case KEY_DOWN:
+      if (psnake->dir != up)
+         psnake->dir = down;
+      break;
+   case KEY_UP:
+      if (psnake->dir != down)
+         psnake->dir = up;
+      break;
+   case KEY_RIGHT:
+      if (psnake->dir != left)
+         psnake->dir = right;
+      break;
    }
 }
 
-void get_random_apple(Snake* psnake, Apples* apples)
+void get_random_apple(Snake *psnake, Apples *apples)
 {
    Node n;
-   Node* found;
+   Node *found;
    unsigned int y;
    unsigned int x;
-   Apple* papple;
+   Apple *papple;
 
    do
    {
@@ -620,23 +603,21 @@ void get_random_apple(Snake* psnake, Apples* apples)
          x = cols - 2;
       n.x = x;
       n.y = y;
-   }
-   while (
-         find_element(psnake->body, &n, (void**) &found) == 0 ||
-         find_element(apples->list, &n, (void**) &found) == 0
-         );
+   } while (
+       find_element(psnake->body, &n, (void **)&found) == 0 ||
+       find_element(apples->list, &n, (void **)&found) == 0);
 
-   papple = (Apple*) malloc(sizeof(Apple));
+   papple = (Apple *)malloc(sizeof(Apple));
    if (papple)
    {
       papple->x = x;
       papple->y = y;
-      list_ins_next(apples->list, NULL, (void*)papple);
+      list_ins_next(apples->list, NULL, (void *)papple);
       apples->count++;
    }
 }
 
-void check_timeout(Snake* psnake, Apples* apples)
+void check_timeout(Snake *psnake, Apples *apples)
 {
    if (time_out <= 0)
    {
@@ -644,7 +625,6 @@ void check_timeout(Snake* psnake, Apples* apples)
       get_random_apple(psnake, apples);
       time_out = TIME_OUT;
    }
-
 }
 
 void display_walls()
@@ -655,7 +635,6 @@ void display_walls()
    for (i = 0; i < cols; i++)
    {
       mvprintw(0, i, wall);
-     // mvprintw(rows - 1, i, wall);
    }
    for (i = 0; i < rows; i++)
    {
@@ -672,21 +651,21 @@ void display_timeout()
    unsigned int x = (1000 - time_out) * step;
 
    init_pair(7, COLOR_RED, COLOR_BLACK);
-   for (i = 0; i < cols;  i++)
+   for (i = 0; i < cols; i++)
    {
-      if (i < x){
+      if (i < x)
+      {
          attron(COLOR_PAIR(7));
          mvprintw(rows - 1, i, wall);
          attroff(COLOR_PAIR(7));
-      }else{
+      }
+      else
+      {
          attron(COLOR_PAIR(3));
          mvprintw(rows - 1, i, wall);
          attroff(COLOR_PAIR(3));
       }
-
    }
-
-
 }
 
 void display_score()
@@ -703,7 +682,7 @@ void display_score()
 }
 
 void display_final_score()
-{  
+{
    char buf[30];
    clear_display();
    sprintf(buf, "Your score is: %d", score);
@@ -737,7 +716,7 @@ void display_title()
 }
 
 void display_lives_left()
-{  
+{
    char buf[30];
    clear_display();
    sprintf(buf, "Lives left: %d", lives);
